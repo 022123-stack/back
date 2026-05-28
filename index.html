@@ -31,8 +31,6 @@
   .btn-sm{padding:5px 12px;font-size:12px}
   .btn-success{background:#48bb78;color:#fff}
   .btn-success:hover{background:#3da869}
-  .btn-ghost{background:transparent;color:#6C63FF;border:1px dashed #c5bfff;font-size:12px;padding:5px 12px;border-radius:6px;cursor:pointer}
-  .btn-ghost:hover{background:#f0edff}
   .content{padding:24px;flex:1;min-width:0}
   .page{display:none}
   .page.active{display:block}
@@ -85,12 +83,7 @@
   .game-reward-block .block-title{font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px}
   .game-tag{display:inline-flex;align-items:center;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:500}
   .game-tag-tp{background:#fef3c7;color:#92400e}
-  .game-tag-co{background:#e0f2fe;color:#075985}
-  .game-tag-dt{background:#fce7f3;color:#9d174d}
-  .remove-btn{width:24px;height:24px;border-radius:4px;border:none;background:#fee2e2;color:#e53e3e;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
-  .remove-btn:hover{background:#fecaca}
   .reward-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  /* RTP removed */
   /* Time config */
   .time-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .datetime-input{width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px;color:#1a1a2e;outline:none}
@@ -102,25 +95,6 @@
   .step.done .step-num{background:#48bb78;color:#fff}
   .step-num{width:24px;height:24px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600}
   .step-line{flex:1;height:1px;background:#eee;margin:0 8px}
-  /* Game selector */
-  .add-game-panel{background:#f8f7ff;border:1px solid #d4ccff;border-radius:8px;padding:14px;margin-bottom:14px}
-  .add-game-panel p{font-size:12px;color:#6C63FF;margin-bottom:10px;font-weight:500}
-  .game-options{display:flex;gap:10px;flex-wrap:wrap}
-  .game-option-btn{padding:6px 14px;border-radius:6px;border:1px solid #ddd;background:#fff;cursor:pointer;font-size:13px;transition:all .15s;display:flex;align-items:center;gap:6px}
-  .game-option-btn:hover{border-color:#6C63FF;background:#f5f3ff;color:#6C63FF}
-  .game-option-btn.added{background:#f0f0f0;color:#aaa;cursor:not-allowed;border-color:#eee}
-  /* Eagle image upload */
-  .eagle-upload-zone{border:2px dashed #d4d4d4;border-radius:8px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;background:#fafafa;position:relative;overflow:hidden}
-  .eagle-upload-zone:hover{border-color:#6C63FF;background:#f5f3ff}
-  .eagle-upload-zone .upload-icon{font-size:28px;margin-bottom:8px}
-  .eagle-upload-zone p{font-size:13px;color:#666}
-  .eagle-upload-zone .upload-hint{font-size:11px;color:#bbb;margin-top:4px}
-  .eagle-upload-zone.has-image{border-style:solid;border-color:#48bb78;padding:8px;background:#f0fff4}
-  .eagle-preview{max-width:100%;max-height:200px;border-radius:6px;object-fit:contain;display:block;margin:0 auto}
-  .eagle-preview-wrap{position:relative;display:inline-block}
-  .eagle-remove-btn{position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:50%;border:none;background:rgba(0,0,0,0.6);color:#fff;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;z-index:2}
-  .eagle-remove-btn:hover{background:rgba(229,62,62,0.9)}
-  .eagle-file-info{font-size:12px;color:#276749;margin-top:8px;display:flex;align-items:center;gap:6px;justify-content:center}
   /* Analytics */
   .analytics-grid{display:grid;grid-template-columns:2fr 1fr;gap:20px}
   .chart-card{background:#fff;border-radius:10px;border:1px solid #eee;padding:20px;margin-bottom:16px}
@@ -139,13 +113,50 @@
   .metric-mini .m-sub{font-size:10px;color:#6C63FF;margin-top:2px}
   .chip{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;background:#f0edff;color:#6C63FF;border:1px solid #d4ccff;margin:2px}
   .divider{height:1px;background:#f0f0f0;margin:16px 0}
-  /* Modal */
-  .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);display:none;align-items:center;justify-content:center;z-index:100}
+
+  /* ===== Confirm Modal (small) ===== */
+  .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);display:none;align-items:center;justify-content:center;z-index:200}
   .modal-overlay.active{display:flex}
   .modal-box{background:#fff;border-radius:10px;padding:24px;width:380px;max-width:90%;box-shadow:0 10px 40px rgba(0,0,0,0.15)}
   .modal-box h4{font-size:15px;font-weight:600;margin-bottom:8px}
   .modal-box p{font-size:13px;color:#666;margin-bottom:20px;line-height:1.6}
   .modal-actions{display:flex;justify-content:flex-end;gap:10px}
+
+  /* ===== Drawer Modal (large, for create/edit) ===== */
+  .drawer-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.45);display:none;z-index:150;animation:fadeIn .2s}
+  .drawer-overlay.active{display:block}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  .drawer-panel{position:fixed;top:0;right:0;width:720px;max-width:92vw;height:100vh;background:#F5F6FA;z-index:160;box-shadow:-6px 0 30px rgba(0,0,0,0.12);display:none;flex-direction:column;animation:slideIn .25s ease-out}
+  .drawer-panel.active{display:flex}
+  @keyframes slideIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
+  .drawer-header{background:#fff;padding:16px 24px;border-bottom:1px solid #e8eaed;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+  .drawer-header h3{font-size:16px;font-weight:600;display:flex;align-items:center;gap:10px}
+  .drawer-close{width:32px;height:32px;border-radius:6px;border:none;background:#f5f5f5;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:#666;transition:all .15s}
+  .drawer-close:hover{background:#fee2e2;color:#e53e3e}
+  .drawer-body{flex:1;overflow-y:auto;padding:24px}
+  .drawer-footer{background:#fff;padding:14px 24px;border-top:1px solid #e8eaed;display:flex;justify-content:flex-end;gap:12px;flex-shrink:0}
+
+  /* Eagle image upload */
+  .eagle-upload-zone{border:2px dashed #d4d4d4;border-radius:8px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;background:#fafafa;position:relative;overflow:hidden}
+  .eagle-upload-zone:hover{border-color:#6C63FF;background:#f5f3ff}
+  .eagle-upload-zone .upload-icon{font-size:28px;margin-bottom:8px}
+  .eagle-upload-zone p{font-size:13px;color:#666}
+  .eagle-upload-zone .upload-hint{font-size:11px;color:#bbb;margin-top:4px}
+  .eagle-upload-zone.has-image{border-style:solid;border-color:#48bb78;padding:8px;background:#f0fff4}
+  .eagle-preview{max-width:100%;max-height:200px;border-radius:6px;object-fit:contain;display:block;margin:0 auto}
+  .eagle-preview-wrap{position:relative;display:inline-block}
+  .eagle-remove-btn{position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:50%;border:none;background:rgba(0,0,0,0.6);color:#fff;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;z-index:2}
+  .eagle-remove-btn:hover{background:rgba(229,62,62,0.9)}
+  .eagle-file-info{font-size:12px;color:#276749;margin-top:8px;display:flex;align-items:center;gap:6px;justify-content:center}
+
+  /* Analytics task selector cards */
+  .analytics-task-card{background:#fff;border:1px solid #eee;border-radius:10px;padding:16px 20px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .analytics-task-card:hover{border-color:#6C63FF;background:#f9f8ff;box-shadow:0 2px 12px rgba(108,99,255,0.1)}
+  .analytics-task-card .atc-left{flex:1;min-width:0}
+  .analytics-task-card .atc-name{font-size:14px;font-weight:600;color:#1a1a2e;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .analytics-task-card .atc-meta{font-size:12px;color:#888;display:flex;gap:16px;flex-wrap:wrap}
+  .analytics-task-card .atc-arrow{color:#ccc;font-size:18px;transition:color .15s;flex-shrink:0}
+  .analytics-task-card:hover .atc-arrow{color:#6C63FF}
 </style>
 </head>
 <body>
@@ -159,10 +170,6 @@
     <div class="nav-item active" onclick="showPage('tasklist')">
       <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       召回任务列表
-    </div>
-    <div class="nav-item" onclick="showPage('create')">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-      新建任务
     </div>
     <div class="nav-item" onclick="showPage('analytics')">
       <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
@@ -180,7 +187,7 @@
     <div class="topbar-title">召回任务列表</div>
     <div class="topbar-actions">
       <button class="btn btn-outline btn-sm">导出报表</button>
-      <button class="btn btn-primary btn-sm" onclick="showPage('create')">＋ 新建召回任务</button>
+      <button class="btn btn-primary btn-sm" onclick="openCreateDrawer()">＋ 新建召回任务</button>
     </div>
   </div>
   <div class="content">
@@ -237,28 +244,155 @@
             <th>操作</th>
           </tr>
         </thead>
-        <tbody id="task-table-body">
-          <!-- tasks rendered by JS -->
-        </tbody>
+        <tbody id="task-table-body"></tbody>
       </table>
     </div>
   </div>
-</div><!-- end page-tasklist -->
+</div>
 
-<!-- ==================== PAGE: Create Task ==================== -->
-<div class="page" id="page-create">
+<!-- ==================== PAGE: Analytics ==================== -->
+<div class="page" id="page-analytics">
+  <!-- Task selector: no specific task selected yet -->
+  <div id="analytics-selector">
+    <div class="topbar">
+      <div class="topbar-title">数据监控</div>
+    </div>
+    <div class="content">
+      <div style="margin-bottom:20px">
+        <div style="font-size:15px;font-weight:600;margin-bottom:4px">选择任务查看数据</div>
+        <div style="font-size:13px;color:#888">点击下方任务卡片，或从召回任务列表中点击「报表」按钮直接进入</div>
+      </div>
+      <div id="analytics-task-list" style="display:grid;grid-template-columns:1fr;gap:12px"></div>
+      <div id="analytics-no-data" style="display:none;text-align:center;padding:60px 20px">
+        <div style="font-size:48px;opacity:.25;margin-bottom:12px">📭</div>
+        <div style="font-size:14px;color:#888">暂无可查看的任务数据</div>
+        <div style="font-size:12px;color:#aaa;margin-top:4px">执行中、已暂停或已结束的任务将在此展示</div>
+      </div>
+    </div>
+  </div>
+  <!-- Content: specific task selected -->
+  <div id="analytics-content" style="display:none">
   <div class="topbar">
     <div style="display:flex;align-items:center;gap:12px">
-      <button class="btn btn-outline btn-sm" onclick="showPage('tasklist')">← 返回</button>
-      <div class="topbar-title">新建召回任务</div>
+      <button class="btn btn-outline btn-sm" onclick="backToAnalyticsSelector()">← 返回选择</button>
+      <div class="topbar-title" id="analytics-title">数据监控</div>
     </div>
     <div class="topbar-actions">
-      <span style="font-size:12px;color:#888">草稿自动保存</span>
-      <button class="btn btn-outline btn-sm">保存草稿</button>
-      <button class="btn btn-primary btn-sm" onclick="publishTask()">发布并执行 →</button>
+      <select class="form-select" style="width:120px;font-size:12px">
+        <option>今日</option><option>近7日</option><option>全周期</option>
+      </select>
+      <button class="btn btn-outline btn-sm">导出数据</button>
     </div>
   </div>
   <div class="content">
+    <div style="margin-bottom:16px;padding:12px 16px;background:#fff;border-radius:8px;border:1px solid #eee;font-size:12px;display:flex;gap:24px;flex-wrap:wrap">
+      <span>📅 生效时间：<strong>2026-04-20 10:00</strong></span>
+      <span>⏰ 结束时间：<strong>2026-05-05 23:59</strong></span>
+      <span>🕐 剩余时间：<strong style="color:#6C63FF">7天 14小时</strong></span>
+      <span>🎮 游戏：<span class="chip">Teen Patti</span></span>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">触发奖励 UID</div>
+        <div class="stat-value">9,750</div>
+        <div class="stat-sub">目标 12,500</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">端内激活</div>
+        <div class="stat-value">4,388</div>
+        <div class="stat-sub">激活率 45.0%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">消耗免费次数</div>
+        <div class="stat-value">2,876</div>
+        <div class="stat-sub">使用率 65.5%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">付费转化</div>
+        <div class="stat-value">614</div>
+        <div class="stat-sub">转化率 21.3%</div>
+      </div>
+    </div>
+    <div class="analytics-grid">
+      <div>
+        <div class="chart-card">
+          <h3>转化漏斗 · 全链路流转</h3>
+          <div>
+            <div class="funnel-step"><div class="funnel-label">上传 UID</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:100%;background:#6C63FF"></div><span class="funnel-bar-text">上传 UID</span></div><div class="funnel-count">12,500</div><div class="funnel-rate">100%</div></div>
+            <div class="funnel-step"><div class="funnel-label">触发奖励</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:78%;background:#7C73EF"></div><span class="funnel-bar-text">触发奖励</span></div><div class="funnel-count">9,750</div><div class="funnel-rate">78.0%</div></div>
+            <div class="funnel-step"><div class="funnel-label">端内激活</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:45%;background:#9589E5"></div><span class="funnel-bar-text">端内激活</span></div><div class="funnel-count">4,388</div><div class="funnel-rate">45.0%</div></div>
+            <div class="funnel-step"><div class="funnel-label">消耗免费次数</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:29.5%;background:#534AB7"></div><span class="funnel-bar-text-fallback">消耗免费次数</span></div><div class="funnel-count">2,876</div><div class="funnel-rate">29.5%</div></div>
+            <div class="funnel-step"><div class="funnel-label">免费次数用尽</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:22%;background:#3C3489"></div><span class="funnel-bar-text-fallback">免费次数用尽</span></div><div class="funnel-count">2,145</div><div class="funnel-rate">22.0%</div></div>
+            <div class="funnel-step"><div class="funnel-label">付费转化</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:6.3%;background:#e53e3e"></div><span class="funnel-bar-text-fallback">付费转化</span></div><div class="funnel-count">614</div><div class="funnel-rate">6.3%</div></div>
+          </div>
+          <div style="margin-top:14px;padding:10px;background:#f5f3ff;border-radius:6px;font-size:12px;color:#534AB7">💡 关键瓶颈：端内激活 → 消耗免费次数 转化仅 65.5%，建议优化游戏引导或降低首次进入门槛</div>
+        </div>
+        <div class="chart-card">
+          <h3>游戏消耗情况</h3>
+          <table>
+            <thead><tr><th>游戏</th><th>免费次数（已发）</th><th>已消耗</th><th>核销率</th><th>预估成本</th></tr></thead>
+            <tbody><tr><td>🃏 Teen Patti</td><td>48,750</td><td>30,546</td><td><span style="color:#276749;font-weight:500">62.7%</span></td><td>$1.14</td></tr></tbody>
+          </table>
+          <div style="font-size:11px;color:#aaa;margin-top:8px">预估成本换算：30,546 次 × 300 Beans（均值） / 8,000 = $1.14 · 1 USD ≈ 8,000 Beans</div>
+        </div>
+      </div>
+      <div>
+        <div class="chart-card">
+          <h3>资产消耗总览</h3>
+          <div class="metric-mini"><div class="m-label">总发出免费次数</div><div class="m-val">48,750</div><div class="m-sub">Teen Patti</div></div>
+          <div class="metric-mini"><div class="m-label">已核销</div><div class="m-val">30,546</div><div class="m-sub">核销率 62.7%</div></div>
+          <div class="metric-mini"><div class="m-label">预估总成本</div><div class="m-val">$1.14</div><div class="m-sub">1 USD ≈ 8,000 Beans</div></div>
+          <div style="margin-top:10px">
+            <div style="font-size:12px;color:#555;margin-bottom:5px">总核销进度</div>
+            <div style="height:8px;background:#f0f0f0;border-radius:4px;overflow:hidden"><div style="width:62%;height:100%;background:#48bb78;border-radius:4px"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:#888;margin-top:4px"><span>62.0% 已核销</span><span>目标 ≥60% ✓</span></div>
+          </div>
+        </div>
+        <div class="chart-card">
+          <h3>时间进度</h3>
+          <div style="margin-bottom:10px">
+            <div style="font-size:12px;color:#555;margin-bottom:5px">活动周期进度</div>
+            <div style="height:8px;background:#f0f0f0;border-radius:4px;overflow:hidden"><div style="width:53%;height:100%;background:#6C63FF;border-radius:4px"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:#888;margin-top:4px"><span>04-20 开始</span><span>53% 已过</span><span>05-05 结束</span></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-top:14px">
+            <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#555">剩余天数</span><span style="color:#6C63FF;font-weight:500">7 天 14 小时</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#555">未触发 UID</span><span style="font-weight:500">2,750 个</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#555">预计完成</span><span style="color:#276749;font-weight:500">剩余时间内可完成</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div><!-- end analytics-content -->
+</div>
+
+</div><!-- end main -->
+</div><!-- end app -->
+
+<!-- ===== Confirm Modal (small) ===== -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-box">
+    <h4 id="modal-title">确认操作</h4>
+    <p id="modal-body">确定要执行此操作吗？</p>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal()">取消</button>
+      <button class="btn btn-primary" id="modal-confirm-btn" onclick="confirmModalAction()">确认</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Drawer Overlay ===== -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<!-- ===== Drawer Panel (Create / Edit) ===== -->
+<div class="drawer-panel" id="drawerPanel">
+  <div class="drawer-header">
+    <h3 id="drawer-title">✏️ 新建召回任务</h3>
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-body">
+
     <!-- Step bar -->
     <div class="step-bar">
       <div class="step active"><div class="step-num">1</div><span>基本信息</span></div>
@@ -270,7 +404,7 @@
       <div class="step"><div class="step-num">4</div><span>生效时间</span></div>
     </div>
 
-    <!-- Section 1: 基本信息 -->
+    <!-- Section 1 -->
     <div class="config-card">
       <div class="config-card-header">
         <h3><span class="section-num">1</span> 基本信息</h3>
@@ -278,18 +412,18 @@
       <div style="display:grid;grid-template-columns:1fr;gap:16px">
         <div class="form-group" style="margin-bottom:0">
           <label class="form-label">任务名称</label>
-          <input class="form-input" id="task-name" placeholder="例：Whale用户4月大鱼回流" value="Whale用户4月大鱼回流">
+          <input class="form-input" id="task-name" placeholder="例：Whale用户4月大鱼回流">
         </div>
       </div>
       <div style="margin-top:12px">
         <div class="form-group" style="margin-bottom:0">
           <label class="form-label">任务备注（选填）</label>
-          <input class="form-input" id="task-note" placeholder="补充说明，如：针对4月流失的高价值用户，结合板球节节点…">
+          <input class="form-input" id="task-note" placeholder="补充说明">
         </div>
       </div>
     </div>
 
-    <!-- Section 2: 人群上传 -->
+    <!-- Section 2 -->
     <div class="config-card">
       <div class="config-card-header">
         <h3><span class="section-num">2</span> 人群上传</h3>
@@ -314,7 +448,7 @@
       </div>
     </div>
 
-    <!-- Section 2.5: 飞鹰图上传 -->
+    <!-- Section 2.5 -->
     <div class="config-card">
       <div class="config-card-header">
         <h3><span class="section-num" style="width:auto;padding:0 8px;border-radius:11px">2.5</span> 飞鹰图（活动 Banner）</h3>
@@ -342,14 +476,12 @@
       <input type="file" id="eagleFileInput" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="onEagleFileSelected(event)">
     </div>
 
-    <!-- Section 3: Game Reward Config -->
+    <!-- Section 3 -->
     <div class="config-card">
       <div class="config-card-header">
         <h3><span class="section-num">3</span> 游戏奖励配置</h3>
         <span style="font-size:12px;color:#888">用户必先消耗完所有免费次数，方可进行付费游戏</span>
       </div>
-
-      <!-- 游戏选择 -->
       <div class="form-group" style="margin-bottom:16px">
         <label class="form-label">选择游戏</label>
         <select class="form-select" style="width:260px;background:#f5f5f5;color:#aaa;cursor:not-allowed" disabled title="当前仅支持 Teen Patti">
@@ -357,8 +489,6 @@
         </select>
         <div style="font-size:11px;color:#aaa;margin-top:4px">当前阶段仅支持 Teen Patti，后续版本将开放更多游戏</div>
       </div>
-
-      <!-- 已添加的游戏奖励块 -->
       <div id="gameRewardList">
         <div class="game-reward-block" id="block-tp">
           <div class="block-header">
@@ -387,13 +517,12 @@
           </div>
         </div>
       </div>
-
       <div style="padding:10px 14px;background:#f5f3ff;border:1px solid #d4ccff;border-radius:6px;font-size:12px;color:#534AB7">
         💡 免费游戏次数范围：1 ~ 50 次；替换额度表示每次免费游戏对应的 Beans 投注面值
       </div>
     </div>
 
-    <!-- Section 4: 生效时间 -->
+    <!-- Section 4 -->
     <div class="config-card">
       <div class="config-card-header">
         <h3><span class="section-num">4</span> 生效时间配置</h3>
@@ -428,225 +557,27 @@
       </div>
     </div>
 
-    <!-- Bottom action -->
-    <div style="display:flex;justify-content:flex-end;gap:12px;padding-bottom:32px">
-      <button class="btn btn-outline">保存草稿</button>
-      <button class="btn btn-primary" onclick="publishTask()">发布并执行 →</button>
-    </div>
-  </div>
-</div><!-- end page-create -->
+  </div><!-- end drawer-body -->
 
-<!-- ==================== PAGE: Analytics ==================== -->
-<div class="page" id="page-analytics">
-  <div class="topbar">
-    <div style="display:flex;align-items:center;gap:12px">
-      <button class="btn btn-outline btn-sm" onclick="showPage('tasklist')">← 返回列表</button>
-      <div class="topbar-title" id="analytics-title">数据监控 · 任务 1 · Whale用户4月大鱼回流</div>
-    </div>
-    <div class="topbar-actions">
-      <select class="form-select" style="width:120px;font-size:12px">
-        <option>今日</option><option>近7日</option><option>全周期</option>
-      </select>
-      <button class="btn btn-outline btn-sm">导出数据</button>
-    </div>
-  </div>
-  <div class="content">
-    <!-- Info bar -->
-    <div style="margin-bottom:16px;padding:12px 16px;background:#fff;border-radius:8px;border:1px solid #eee;font-size:12px;display:flex;gap:24px;flex-wrap:wrap">
-      <span>📅 生效时间：<strong>2026-04-20 10:00</strong></span>
-      <span>⏰ 结束时间：<strong>2026-05-05 23:59</strong></span>
-      <span>🕐 剩余时间：<strong style="color:#6C63FF">7天 14小时</strong></span>
-      <span>🎮 游戏：<span class="chip">Teen Patti</span></span>
-    </div>
-
-    <!-- Stats row -->
-    <div class="stats-row">
-      <div class="stat-card">
-        <div class="stat-label">触发奖励 UID</div>
-        <div class="stat-value">9,750</div>
-        <div class="stat-sub">目标 12,500</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">端内激活</div>
-        <div class="stat-value">4,388</div>
-        <div class="stat-sub">激活率 45.0%</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">消耗免费次数</div>
-        <div class="stat-value">2,876</div>
-        <div class="stat-sub">使用率 65.5%</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">付费转化</div>
-        <div class="stat-value">614</div>
-        <div class="stat-sub">转化率 21.3%</div>
-      </div>
-    </div>
-
-    <!-- Analytics grid -->
-    <div class="analytics-grid">
-      <!-- Left column -->
-      <div>
-        <!-- Funnel -->
-        <div class="chart-card">
-          <h3>转化漏斗 · 全链路流转</h3>
-          <div>
-            <div class="funnel-step">
-              <div class="funnel-label">上传 UID</div>
-              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:100%;background:#6C63FF"></div><span class="funnel-bar-text">上传 UID</span></div>
-              <div class="funnel-count">12,500</div>
-              <div class="funnel-rate">100%</div>
-            </div>
-            <div class="funnel-step">
-              <div class="funnel-label">触发奖励</div>
-              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:78%;background:#7C73EF"></div><span class="funnel-bar-text">触发奖励</span></div>
-              <div class="funnel-count">9,750</div>
-              <div class="funnel-rate">78.0%</div>
-            </div>
-            <div class="funnel-step">
-              <div class="funnel-label">端内激活</div>
-              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:45%;background:#9589E5"></div><span class="funnel-bar-text">端内激活</span></div>
-              <div class="funnel-count">4,388</div>
-              <div class="funnel-rate">45.0%</div>
-            </div>
-            <div class="funnel-step">
-              <div class="funnel-label">消耗免费次数</div>
-              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:29.5%;background:#534AB7"></div><span class="funnel-bar-text-fallback">消耗免费次数</span></div>
-              <div class="funnel-count">2,876</div>
-              <div class="funnel-rate">29.5%</div>
-            </div>
-            <div class="funnel-step">
-              <div class="funnel-label">免费次数用尽</div>
-              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:22%;background:#3C3489"></div><span class="funnel-bar-text-fallback">免费次数用尽</span></div>
-              <div class="funnel-count">2,145</div>
-              <div class="funnel-rate">22.0%</div>
-            </div>
-            <div class="funnel-step">
-              <div class="funnel-label">付费转化</div>
-              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:6.3%;background:#e53e3e"></div><span class="funnel-bar-text-fallback">付费转化</span></div>
-              <div class="funnel-count">614</div>
-              <div class="funnel-rate">6.3%</div>
-            </div>
-          </div>
-          <div style="margin-top:14px;padding:10px;background:#f5f3ff;border-radius:6px;font-size:12px;color:#534AB7">
-            💡 关键瓶颈：端内激活 → 消耗免费次数 转化仅 65.5%，建议优化游戏引导或降低首次进入门槛
-          </div>
-        </div>
-
-        <!-- Per-game breakdown -->
-        <div class="chart-card">
-          <h3>游戏消耗情况</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>游戏</th>
-                <th>免费次数（已发）</th>
-                <th>已消耗</th>
-                <th>核销率</th>
-                <th>预估成本</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>🃏 Teen Patti</td>
-                <td>48,750</td>
-                <td>30,546</td>
-                <td><span style="color:#276749;font-weight:500">62.7%</span></td>
-                <td>$1.14</td>
-              </tr>
-            </tbody>
-          </table>
-          <div style="font-size:11px;color:#aaa;margin-top:8px">预估成本换算：30,546 次 × 300 Beans（均值） / 8,000 = $1.14 · 1 USD ≈ 8,000 Beans</div>
-        </div>
-      </div>
-
-      <!-- Right column -->
-      <div>
-        <!-- 资产消耗总览 -->
-        <div class="chart-card">
-          <h3>资产消耗总览</h3>
-          <div class="metric-mini">
-            <div class="m-label">总发出免费次数</div>
-            <div class="m-val">48,750</div>
-            <div class="m-sub">Teen Patti</div>
-          </div>
-          <div class="metric-mini">
-            <div class="m-label">已核销</div>
-            <div class="m-val">30,546</div>
-            <div class="m-sub">核销率 62.7%</div>
-          </div>
-          <div class="metric-mini">
-            <div class="m-label">预估总成本</div>
-            <div class="m-val">$1.14</div>
-            <div class="m-sub">1 USD ≈ 8,000 Beans</div>
-          </div>
-          <div style="margin-top:10px">
-            <div style="font-size:12px;color:#555;margin-bottom:5px">总核销进度</div>
-            <div style="height:8px;background:#f0f0f0;border-radius:4px;overflow:hidden">
-              <div style="width:62%;height:100%;background:#48bb78;border-radius:4px"></div>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:11px;color:#888;margin-top:4px">
-              <span>62.0% 已核销</span><span>目标 ≥60% ✓</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 时间进度 -->
-        <div class="chart-card">
-          <h3>时间进度</h3>
-          <div style="margin-bottom:10px">
-            <div style="font-size:12px;color:#555;margin-bottom:5px">活动周期进度</div>
-            <div style="height:8px;background:#f0f0f0;border-radius:4px;overflow:hidden">
-              <div style="width:53%;height:100%;background:#6C63FF;border-radius:4px"></div>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:11px;color:#888;margin-top:4px">
-              <span>04-20 开始</span><span>53% 已过</span><span>05-05 结束</span>
-            </div>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:6px;margin-top:14px">
-            <div style="display:flex;justify-content:space-between;font-size:12px">
-              <span style="color:#555">剩余天数</span><span style="color:#6C63FF;font-weight:500">7 天 14 小时</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:12px">
-              <span style="color:#555">未触发 UID</span><span style="font-weight:500">2,750 个</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:12px">
-              <span style="color:#555">预计完成</span><span style="color:#276749;font-weight:500">剩余时间内可完成</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div><!-- end page-analytics -->
-
-</div><!-- end main -->
-</div><!-- end app -->
-
-<!-- Modal -->
-<div class="modal-overlay" id="confirmModal">
-  <div class="modal-box">
-    <h4 id="modal-title">确认操作</h4>
-    <p id="modal-body">确定要执行此操作吗？</p>
-    <div class="modal-actions">
-      <button class="btn btn-outline" onclick="closeModal()">取消</button>
-      <button class="btn btn-primary" id="modal-confirm-btn" onclick="confirmModalAction()">确认</button>
-    </div>
+  <div class="drawer-footer">
+    <button class="btn btn-outline" onclick="saveDraft()">保存草稿</button>
+    <button class="btn btn-primary" onclick="publishTask()">发布并执行 →</button>
   </div>
 </div>
 
 <script>
 // ========== Task Data ==========
 var tasks = [
-  { id: 1, name: 'Whale用户4月大鱼回流', uidCount: 12500, start: '2026-04-20 10:00', end: '2026-05-05 23:59', progress: 78, rate: '21.3%', game: 'Teen Patti', status: 'running', created: '2026-04-20' },
-  { id: 2, name: '5日未登用户召回', uidCount: 8200, start: '2026-04-18 09:00', end: '2026-04-25 23:59', progress: 100, rate: '15.8%', game: 'Cricket Over', status: 'done', created: '2026-04-18' },
-  { id: 3, name: '板球节召回专项', uidCount: 25000, start: '2026-05-01 00:00', end: '2026-05-10 23:59', progress: 0, rate: null, game: 'Teen Patti', status: 'draft', created: '2026-04-25' },
-  { id: 4, name: 'Dragon Tiger 高价值流失', uidCount: 5800, start: '2026-04-10 10:00', end: '2026-04-20 23:59', progress: 45, rate: null, game: 'Dragon Tiger', status: 'stopped', created: '2026-04-10' }
+  { id: 1, name: 'Whale用户4月大鱼回流', uidCount: 12500, start: '2026-04-20 10:00', end: '2026-05-05 23:59', progress: 78, rate: '21.3%', game: 'Teen Patti', status: 'running', created: '2026-04-20', note: '' },
+  { id: 2, name: '5日未登用户召回', uidCount: 8200, start: '2026-04-18 09:00', end: '2026-04-25 23:59', progress: 100, rate: '15.8%', game: 'Cricket Over', status: 'done', created: '2026-04-18', note: '' },
+  { id: 3, name: '板球节召回专项', uidCount: 25000, start: '2026-05-01 00:00', end: '2026-05-10 23:59', progress: 0, rate: null, game: 'Teen Patti', status: 'draft', created: '2026-04-25', note: '针对板球节期间的流失用户' },
+  { id: 4, name: 'Dragon Tiger 高价值流失', uidCount: 5800, start: '2026-04-10 10:00', end: '2026-04-20 23:59', progress: 45, rate: null, game: 'Dragon Tiger', status: 'stopped', created: '2026-04-10', note: '' }
 ];
 
 var nextId = 5;
 var pendingAction = null;
-var pendingTaskId = null;
+var editingTaskId = null; // null = 新建, number = 编辑
+var selectedAnalyticsTaskId = null; // 当前查看报表的任务 ID
 
 // ========== Render ==========
 function renderTaskList() {
@@ -706,10 +637,125 @@ function showPage(name) {
   document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
   document.getElementById('page-' + name).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
-  var map = {tasklist: 0, create: 1, analytics: 2};
+  var map = {tasklist: 0, analytics: 1};
   var items = document.querySelectorAll('.nav-item');
   if (map[name] !== undefined) items[map[name]].classList.add('active');
+  // 数据监控页：侧栏直接进入时展示任务选择器
+  if (name === 'analytics' && !selectedAnalyticsTaskId) {
+    showAnalyticsSelector();
+  }
 }
+
+// ========== Analytics Selector ==========
+function showAnalyticsSelector() {
+  selectedAnalyticsTaskId = null;
+  document.getElementById('analytics-selector').style.display = 'block';
+  document.getElementById('analytics-content').style.display = 'none';
+  renderAnalyticsTaskList();
+}
+
+function renderAnalyticsTaskList() {
+  // 只展示有数据的任务：执行中、已暂停、已结束（排除草稿）
+  var dataTasks = tasks.filter(function(t) { return t.status !== 'draft'; });
+  var container = document.getElementById('analytics-task-list');
+  var noData = document.getElementById('analytics-no-data');
+
+  if (dataTasks.length === 0) {
+    container.innerHTML = '';
+    container.style.display = 'none';
+    noData.style.display = 'block';
+    return;
+  }
+
+  noData.style.display = 'none';
+  container.style.display = 'grid';
+
+  var html = '';
+  dataTasks.forEach(function(t) {
+    var statusMap = {running:'● 执行中',done:'✓ 已结束',stopped:'⏸ 已暂停'};
+    var statusClass = {running:'badge-running',done:'badge-done',stopped:'badge-stopped'};
+    var rateHtml = t.rate ? '<span>回流率 <strong style="color:#276749">' + t.rate + '</strong></span>' : '';
+    html += '<div class="analytics-task-card" onclick="openAnalytics(' + t.id + ')">' +
+      '<div class="atc-left">' +
+        '<div class="atc-name">#' + t.id + ' · ' + t.name + '</div>' +
+        '<div class="atc-meta">' +
+          '<span>🎮 ' + t.game + '</span>' +
+          '<span>👥 ' + t.uidCount.toLocaleString() + ' UID</span>' +
+          '<span>📅 ' + t.start + ' ~ ' + t.end.split(' ')[0] + '</span>' +
+          rateHtml +
+        '</div>' +
+      '</div>' +
+      '<span class="badge ' + statusClass[t.status] + '">' + statusMap[t.status] + '</span>' +
+      '<span class="atc-arrow">→</span>' +
+    '</div>';
+  });
+  container.innerHTML = html;
+}
+
+function backToAnalyticsSelector() {
+  showAnalyticsSelector();
+}
+
+// ========== Drawer ==========
+function openCreateDrawer() {
+  editingTaskId = null;
+  document.getElementById('drawer-title').innerHTML = '✏️ 新建召回任务';
+  resetDrawerForm();
+  openDrawer();
+}
+
+function editTask(id) {
+  var t = tasks.find(function(x) { return x.id === id; });
+  if (!t) return;
+  editingTaskId = id;
+  document.getElementById('drawer-title').innerHTML = '📝 编辑任务 #' + id;
+  // Fill form with existing data
+  document.getElementById('task-name').value = t.name;
+  document.getElementById('task-note').value = t.note || '';
+  // Reset upload zones (can't restore file state)
+  resetUploadZones();
+  openDrawer();
+}
+
+function openDrawer() {
+  document.getElementById('drawerOverlay').classList.add('active');
+  document.getElementById('drawerPanel').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDrawer() {
+  document.getElementById('drawerOverlay').classList.remove('active');
+  document.getElementById('drawerPanel').classList.remove('active');
+  document.body.style.overflow = '';
+  editingTaskId = null;
+}
+
+function resetDrawerForm() {
+  document.getElementById('task-name').value = '';
+  document.getElementById('task-note').value = '';
+  document.getElementById('start-time').value = '2026-04-28T10:00';
+  document.getElementById('end-time').value = '2026-05-12T23:59';
+  document.getElementById('valid-days').value = '7';
+  document.getElementById('tp-count').value = '5';
+  document.getElementById('tp-quota').selectedIndex = 0;
+  resetUploadZones();
+}
+
+function resetUploadZones() {
+  // Reset CSV upload zone
+  var zone = document.getElementById('uploadZone');
+  zone.innerHTML = '<div class="upload-icon">📂</div><p>点击选择文件，或将 .csv 文件拖拽到此处</p><div class="upload-hint">每行一个 UID，支持单次最大 500K 条 · 仅支持 .csv 格式</div>';
+  zone.style.borderColor = '#d4d4d4';
+  zone.style.background = '#fafafa';
+  document.getElementById('uidResult').style.display = 'none';
+  // Reset eagle upload
+  removeEagleImageDirect();
+}
+
+// Close drawer on overlay click
+document.getElementById('drawerOverlay').addEventListener('click', function() {
+  closeDrawer();
+});
 
 // ========== Actions ==========
 function stopTask(id) {
@@ -733,19 +779,18 @@ function deleteTask(id) {
   });
 }
 
-function editTask(id) {
-  showPage('create');
-}
-
 function openAnalytics(id) {
   var t = tasks.find(function(x) { return x.id === id; });
   if (t) {
+    selectedAnalyticsTaskId = id;
     document.getElementById('analytics-title').textContent = '数据监控 · 任务 ' + t.id + ' · ' + t.name;
+    document.getElementById('analytics-selector').style.display = 'none';
+    document.getElementById('analytics-content').style.display = 'block';
   }
   showPage('analytics');
 }
 
-// ========== Publish ==========
+// ========== Publish / Save Draft ==========
 function publishTask() {
   var name = document.getElementById('task-name').value.trim();
   if (!name) { alert('请填写任务名称'); return; }
@@ -754,7 +799,6 @@ function publishTask() {
   var end = document.getElementById('end-time').value;
   if (!start || !end) { alert('请填写生效时间和结束时间'); return; }
 
-  // Simple date formatting
   function fmtDate(dtStr) {
     if (!dtStr) return '';
     var d = new Date(dtStr);
@@ -766,24 +810,87 @@ function publishTask() {
   var pad = function(n) { return n < 10 ? '0' + n : n; };
   var created = now.getFullYear() + '-' + pad(now.getMonth()+1) + '-' + pad(now.getDate());
 
-  tasks.unshift({
-    id: nextId++,
-    name: name,
-    uidCount: 12500,
-    start: fmtDate(start),
-    end: fmtDate(end),
-    progress: 0,
-    rate: null,
-    game: 'Teen Patti',
-    status: 'running',
-    created: created
-  });
+  if (editingTaskId) {
+    // Update existing task
+    var t = tasks.find(function(x) { return x.id === editingTaskId; });
+    if (t) {
+      t.name = name;
+      t.note = document.getElementById('task-note').value.trim();
+      t.start = fmtDate(start);
+      t.end = fmtDate(end);
+      t.status = 'running';
+    }
+  } else {
+    // Create new task
+    tasks.unshift({
+      id: nextId++,
+      name: name,
+      uidCount: 12500,
+      start: fmtDate(start),
+      end: fmtDate(end),
+      progress: 0,
+      rate: null,
+      game: 'Teen Patti',
+      status: 'running',
+      created: created,
+      note: document.getElementById('task-note').value.trim()
+    });
+  }
 
   renderTaskList();
+  closeDrawer();
   showPage('tasklist');
 }
 
-// ========== Modal ==========
+function saveDraft() {
+  var name = document.getElementById('task-name').value.trim();
+  if (!name) { alert('请填写任务名称'); return; }
+
+  var start = document.getElementById('start-time').value;
+  var end = document.getElementById('end-time').value;
+
+  function fmtDate(dtStr) {
+    if (!dtStr) return '';
+    var d = new Date(dtStr);
+    var pad = function(n) { return n < 10 ? '0' + n : n; };
+    return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+
+  var now = new Date();
+  var pad = function(n) { return n < 10 ? '0' + n : n; };
+  var created = now.getFullYear() + '-' + pad(now.getMonth()+1) + '-' + pad(now.getDate());
+
+  if (editingTaskId) {
+    // Update existing draft
+    var t = tasks.find(function(x) { return x.id === editingTaskId; });
+    if (t) {
+      t.name = name;
+      t.note = document.getElementById('task-note').value.trim();
+      t.start = fmtDate(start);
+      t.end = fmtDate(end);
+    }
+  } else {
+    // Create new draft
+    tasks.unshift({
+      id: nextId++,
+      name: name,
+      uidCount: 12500,
+      start: fmtDate(start),
+      end: fmtDate(end),
+      progress: 0,
+      rate: null,
+      game: 'Teen Patti',
+      status: 'draft',
+      created: created,
+      note: document.getElementById('task-note').value.trim()
+    });
+  }
+
+  renderTaskList();
+  closeDrawer();
+}
+
+// ========== Confirm Modal ==========
 function openModal(title, body, btnType, onConfirm) {
   document.getElementById('modal-title').textContent = title;
   document.getElementById('modal-body').innerHTML = body;
@@ -803,12 +910,11 @@ function confirmModalAction() {
   closeModal();
 }
 
-// Close modal on overlay click
 document.getElementById('confirmModal').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
 });
 
-// ========== Upload / Eagle / RTP (kept for compat) ==========
+// ========== Upload / Eagle ==========
 function simulateUpload() {
   var zone = document.getElementById('uploadZone');
   zone.innerHTML = '<div class="upload-icon">⏳</div><p style="color:#6C63FF">正在解析文件，请稍候…</p>';
@@ -818,14 +924,6 @@ function simulateUpload() {
     zone.style.background = '#f0fff4';
     document.getElementById('uidResult').style.display = 'block';
   }, 1400);
-}
-
-function updateRTP(gameId, val) {
-  var v = parseInt(val);
-  var el = document.getElementById('rtp-display-' + gameId);
-  if (!el) return;
-  el.textContent = (v >= 0 ? '+' : '') + v + '%';
-  el.className = 'rtp-display ' + (v > 0 ? 'rtp-pos' : v < 0 ? 'rtp-neg' : 'rtp-zero');
 }
 
 function handleEagleUpload() {
@@ -867,14 +965,34 @@ function onEagleFileSelected(e) {
 }
 
 function removeEagleImage(e) {
-  e.stopPropagation();
-  var zone = document.getElementById('eagleUploadZone');
-  zone.classList.remove('has-image');
-  zone.innerHTML = '<div class="upload-icon">🖼️</div><p>点击选择图片，或将图片拖拽到此处</p><div class="upload-hint">支持 JPG / PNG / WebP 格式，建议尺寸 750×420px，最大 5MB</div>';
-  document.getElementById('eaglePreviewArea').style.display = 'none';
-  document.getElementById('eaglePreviewImg').src = '';
-  document.getElementById('eagleFileInput').value = '';
+  if (e) e.stopPropagation();
+  removeEagleImageDirect();
 }
+
+function removeEagleImageDirect() {
+  var zone = document.getElementById('eagleUploadZone');
+  if (zone) {
+    zone.classList.remove('has-image');
+    zone.innerHTML = '<div class="upload-icon">🖼️</div><p>点击选择图片，或将图片拖拽到此处</p><div class="upload-hint">支持 JPG / PNG / WebP 格式，建议尺寸 750×420px，最大 5MB</div>';
+  }
+  var preview = document.getElementById('eaglePreviewArea');
+  if (preview) preview.style.display = 'none';
+  var img = document.getElementById('eaglePreviewImg');
+  if (img) img.src = '';
+  var input = document.getElementById('eagleFileInput');
+  if (input) input.value = '';
+}
+
+// ESC to close drawer
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    if (document.getElementById('confirmModal').classList.contains('active')) {
+      closeModal();
+    } else if (document.getElementById('drawerPanel').classList.contains('active')) {
+      closeDrawer();
+    }
+  }
+});
 
 // Init
 renderTaskList();
