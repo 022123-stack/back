@@ -36,6 +36,7 @@
   .page.active{display:block}
   /* Stats */
   .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+  .tasklist-stats{grid-template-columns:repeat(3,1fr)}
   .stat-card{background:#fff;border-radius:10px;padding:16px 20px;border:1px solid #eee}
   .stat-label{font-size:12px;color:#888;margin-bottom:6px}
   .stat-value{font-size:24px;font-weight:600;color:#1a1a2e}
@@ -51,10 +52,8 @@
   tr:last-child td{border-bottom:none}
   tr:hover td{background:#fafcff}
   .badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500}
-  .badge-running{background:#ebf8ff;color:#2b6cb0}
   .badge-draft{background:#f7fafc;color:#718096;border:1px solid #e2e8f0}
   .badge-done{background:#f0fff4;color:#276749}
-  .badge-stopped{background:#fff5f5;color:#c53030}
   .progress-wrap{display:flex;align-items:center;gap:8px}
   .progress-bar{flex:1;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden;min-width:80px}
   .progress-fill{height:100%;border-radius:3px;background:#6C63FF}
@@ -191,7 +190,7 @@
     </div>
   </div>
   <div class="content">
-    <div class="stats-row">
+    <div class="stats-row tasklist-stats">
       <div class="stat-card">
         <div class="stat-label">本月任务总数</div>
         <div class="stat-value" id="stat-total">4</div>
@@ -199,10 +198,6 @@
       <div class="stat-card">
         <div class="stat-label">总触达 UID</div>
         <div class="stat-value">51.5K</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">平均回流率</div>
-        <div class="stat-value">18.6%</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Free Ticket 核销率</div>
@@ -213,16 +208,11 @@
       <input class="form-input" style="width:220px" placeholder="搜索任务名称 / ID…">
       <select class="form-select" style="width:120px">
         <option>全部状态</option>
-        <option>执行中</option>
+        <option>完成</option>
         <option>草稿</option>
-        <option>已结束</option>
-        <option>已暂停</option>
       </select>
-      <select class="form-select" style="width:140px">
-        <option>全部游戏</option>
+      <select class="form-select" style="width:140px;background:#f5f5f5;color:#718096" disabled>
         <option>Teen Patti</option>
-        <option>Dragon Tiger</option>
-        <option>Cricket Over</option>
       </select>
     </div>
     <div class="table-card">
@@ -237,8 +227,6 @@
             <th>UID 规模</th>
             <th>生效时间</th>
             <th>结束时间</th>
-            <th>触达进度</th>
-            <th>回流率</th>
             <th>游戏</th>
             <th>状态</th>
             <th>操作</th>
@@ -266,7 +254,7 @@
       <div id="analytics-no-data" style="display:none;text-align:center;padding:60px 20px">
         <div style="font-size:48px;opacity:.25;margin-bottom:12px">📭</div>
         <div style="font-size:14px;color:#888">暂无可查看的任务数据</div>
-        <div style="font-size:12px;color:#aaa;margin-top:4px">执行中、已暂停或已结束的任务将在此展示</div>
+        <div style="font-size:12px;color:#aaa;margin-top:4px">完成状态任务将在此展示</div>
       </div>
     </div>
   </div>
@@ -487,7 +475,7 @@
         <select class="form-select" style="width:260px;background:#f5f5f5;color:#aaa;cursor:not-allowed" disabled title="当前仅支持 Teen Patti">
           <option selected>🃏 Teen Patti</option>
         </select>
-        <div style="font-size:11px;color:#aaa;margin-top:4px">当前阶段仅支持 Teen Patti，后续版本将开放更多游戏</div>
+        <div style="font-size:11px;color:#aaa;margin-top:4px">当前仅支持 Teen Patti</div>
       </div>
       <div id="gameRewardList">
         <div class="game-reward-block" id="block-tp">
@@ -568,10 +556,10 @@
 <script>
 // ========== Task Data ==========
 var tasks = [
-  { id: 1, name: 'Whale用户4月大鱼回流', uidCount: 12500, start: '2026-04-20 10:00', end: '2026-05-05 23:59', progress: 78, rate: '21.3%', game: 'Teen Patti', status: 'running', created: '2026-04-20', note: '' },
-  { id: 2, name: '5日未登用户召回', uidCount: 8200, start: '2026-04-18 09:00', end: '2026-04-25 23:59', progress: 100, rate: '15.8%', game: 'Cricket Over', status: 'done', created: '2026-04-18', note: '' },
-  { id: 3, name: '板球节召回专项', uidCount: 25000, start: '2026-05-01 00:00', end: '2026-05-10 23:59', progress: 0, rate: null, game: 'Teen Patti', status: 'draft', created: '2026-04-25', note: '针对板球节期间的流失用户' },
-  { id: 4, name: 'Dragon Tiger 高价值流失', uidCount: 5800, start: '2026-04-10 10:00', end: '2026-04-20 23:59', progress: 45, rate: null, game: 'Dragon Tiger', status: 'stopped', created: '2026-04-10', note: '' }
+  { id: 1, name: 'Whale用户4月大鱼回流', uidCount: 12500, start: '2026-04-20 10:00', end: '2026-05-05 23:59', game: 'Teen Patti', status: 'done', created: '2026-04-20', note: '' },
+  { id: 2, name: '5日未登用户召回', uidCount: 8200, start: '2026-04-18 09:00', end: '2026-04-25 23:59', game: 'Teen Patti', status: 'done', created: '2026-04-18', note: '' },
+  { id: 3, name: '板球节召回专项', uidCount: 25000, start: '2026-05-01 00:00', end: '2026-05-10 23:59', game: 'Teen Patti', status: 'draft', created: '2026-04-25', note: '针对板球节期间的流失用户' },
+  { id: 4, name: 'Teen Patti 高价值流失', uidCount: 5800, start: '2026-04-10 10:00', end: '2026-04-20 23:59', game: 'Teen Patti', status: 'done', created: '2026-04-10', note: '' }
 ];
 
 var nextId = 5;
@@ -585,34 +573,17 @@ function renderTaskList() {
   var html = '';
   tasks.forEach(function(t) {
     var statusBadge = '';
-    if (t.status === 'running') statusBadge = '<span class="badge badge-running">● 执行中</span>';
-    else if (t.status === 'draft') statusBadge = '<span class="badge badge-draft">○ 草稿</span>';
-    else if (t.status === 'done') statusBadge = '<span class="badge badge-done">✓ 已结束</span>';
-    else if (t.status === 'stopped') statusBadge = '<span class="badge badge-stopped">⏸ 已暂停</span>';
+    if (t.status === 'draft') statusBadge = '<span class="badge badge-draft">○ 草稿</span>';
+    else if (t.status === 'done') statusBadge = '<span class="badge badge-done">✓ 完成</span>';
 
     var ops = '';
-    if (t.status === 'running') {
-      ops = '<button class="btn btn-outline btn-sm" onclick="openAnalytics(' + t.id + ')">报表</button>' +
-            '<button class="btn btn-danger btn-sm" style="margin-left:4px" onclick="stopTask(' + t.id + ')">停止</button>';
-    } else if (t.status === 'draft') {
+    if (t.status === 'draft') {
       ops = '<button class="btn btn-primary btn-sm" onclick="editTask(' + t.id + ')">编辑</button>';
     } else if (t.status === 'done') {
       ops = '<button class="btn btn-outline btn-sm" onclick="openAnalytics(' + t.id + ')">报表</button>' +
             '<button class="btn btn-danger btn-sm" style="margin-left:4px" onclick="deleteTask(' + t.id + ')">删除</button>';
-    } else if (t.status === 'stopped') {
-      ops = '<button class="btn btn-outline btn-sm" onclick="openAnalytics(' + t.id + ')">报表</button>' +
-            '<button class="btn btn-success btn-sm" style="margin-left:4px" onclick="restartTask(' + t.id + ')">重启</button>' +
-            '<button class="btn btn-danger btn-sm" style="margin-left:4px" onclick="deleteTask(' + t.id + ')">删除</button>';
     }
 
-    var progressHtml = '';
-    if (t.status === 'draft') {
-      progressHtml = '<div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div><span style="font-size:11px;color:#aaa">未开始</span></div>';
-    } else {
-      progressHtml = '<div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:' + t.progress + '%"></div></div><span style="font-size:11px;color:#555">' + t.progress + '%</span></div>';
-    }
-
-    var rateHtml = t.rate ? '<span style="color:#276749;font-weight:500">' + t.rate + '</span>' : '<span style="color:#aaa">—</span>';
 
     html += '<tr>' +
       '<td style="color:#6C63FF;font-weight:500">' + t.id + '</td>' +
@@ -620,8 +591,6 @@ function renderTaskList() {
       '<td>' + t.uidCount.toLocaleString() + '</td>' +
       '<td style="font-size:12px">' + t.start + '</td>' +
       '<td style="font-size:12px">' + t.end + '</td>' +
-      '<td>' + progressHtml + '</td>' +
-      '<td>' + rateHtml + '</td>' +
       '<td><span class="chip">' + t.game + '</span></td>' +
       '<td>' + statusBadge + '</td>' +
       '<td>' + ops + '</td>' +
@@ -655,8 +624,8 @@ function showAnalyticsSelector() {
 }
 
 function renderAnalyticsTaskList() {
-  // 只展示有数据的任务：执行中、已暂停、已结束（排除草稿）
-  var dataTasks = tasks.filter(function(t) { return t.status !== 'draft'; });
+  // 只展示有数据的任务：完成状态（排除草稿）
+  var dataTasks = tasks.filter(function(t) { return t.status === 'done'; });
   var container = document.getElementById('analytics-task-list');
   var noData = document.getElementById('analytics-no-data');
 
@@ -672,9 +641,8 @@ function renderAnalyticsTaskList() {
 
   var html = '';
   dataTasks.forEach(function(t) {
-    var statusMap = {running:'● 执行中',done:'✓ 已结束',stopped:'⏸ 已暂停'};
-    var statusClass = {running:'badge-running',done:'badge-done',stopped:'badge-stopped'};
-    var rateHtml = t.rate ? '<span>回流率 <strong style="color:#276749">' + t.rate + '</strong></span>' : '';
+    var statusMap = {done:'✓ 完成'};
+    var statusClass = {done:'badge-done'};
     html += '<div class="analytics-task-card" onclick="openAnalytics(' + t.id + ')">' +
       '<div class="atc-left">' +
         '<div class="atc-name">#' + t.id + ' · ' + t.name + '</div>' +
@@ -682,7 +650,6 @@ function renderAnalyticsTaskList() {
           '<span>🎮 ' + t.game + '</span>' +
           '<span>👥 ' + t.uidCount.toLocaleString() + ' UID</span>' +
           '<span>📅 ' + t.start + ' ~ ' + t.end.split(' ')[0] + '</span>' +
-          rateHtml +
         '</div>' +
       '</div>' +
       '<span class="badge ' + statusClass[t.status] + '">' + statusMap[t.status] + '</span>' +
@@ -758,20 +725,6 @@ document.getElementById('drawerOverlay').addEventListener('click', function() {
 });
 
 // ========== Actions ==========
-function stopTask(id) {
-  openModal('确认停止任务', '确定要停止任务 <strong>#' + id + '</strong> 吗？停止后任务将变为"已暂停"状态，可稍后重启。', 'danger', function() {
-    var t = tasks.find(function(x) { return x.id === id; });
-    if (t) { t.status = 'stopped'; renderTaskList(); }
-  });
-}
-
-function restartTask(id) {
-  openModal('确认重启任务', '确定要重启任务 <strong>#' + id + '</strong> 吗？任务将恢复"执行中"状态。', 'primary', function() {
-    var t = tasks.find(function(x) { return x.id === id; });
-    if (t) { t.status = 'running'; renderTaskList(); }
-  });
-}
-
 function deleteTask(id) {
   openModal('确认删除任务', '确定要删除任务 <strong>#' + id + '</strong> 吗？此操作不可撤销，任务数据将被永久删除。', 'danger', function() {
     tasks = tasks.filter(function(x) { return x.id !== id; });
@@ -818,7 +771,7 @@ function publishTask() {
       t.note = document.getElementById('task-note').value.trim();
       t.start = fmtDate(start);
       t.end = fmtDate(end);
-      t.status = 'running';
+      t.status = 'done';
     }
   } else {
     // Create new task
@@ -828,10 +781,8 @@ function publishTask() {
       uidCount: 12500,
       start: fmtDate(start),
       end: fmtDate(end),
-      progress: 0,
-      rate: null,
       game: 'Teen Patti',
-      status: 'running',
+      status: 'done',
       created: created,
       note: document.getElementById('task-note').value.trim()
     });
@@ -877,8 +828,6 @@ function saveDraft() {
       uidCount: 12500,
       start: fmtDate(start),
       end: fmtDate(end),
-      progress: 0,
-      rate: null,
       game: 'Teen Patti',
       status: 'draft',
       created: created,
