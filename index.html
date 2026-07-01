@@ -54,9 +54,14 @@
   .badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500}
   .badge-draft{background:#f7fafc;color:#718096;border:1px solid #e2e8f0}
   .badge-done{background:#f0fff4;color:#276749}
+  .badge-sending{background:#fff7ed;color:#c05621;border:1px solid #fed7aa}
+  .btn:disabled,.btn-disabled{background:#f5f5f5!important;color:#bbb!important;border:1px solid #e5e5e5!important;cursor:not-allowed!important;pointer-events:none}
+  .send-loading{display:inline-flex;align-items:center;gap:6px;color:#c05621;font-size:12px;white-space:nowrap}
+  .send-spinner{display:inline-block;width:12px;height:12px;border:2px solid #fed7aa;border-top-color:#ed8936;border-radius:50%;animation:sendSpin .8s linear infinite;flex-shrink:0}
+  @keyframes sendSpin{to{transform:rotate(360deg)}}
   .progress-wrap{display:flex;align-items:center;gap:8px}
   .progress-bar{flex:1;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden;min-width:80px}
-  .progress-fill{height:100%;border-radius:3px;background:#6C63FF}
+  .progress-fill{height:100%;border-radius:3px;background:#6C63FF;transition:width .3s}
   /* Form */
   .form-group{margin-bottom:16px}
   .form-label{display:block;font-size:12px;color:#555;margin-bottom:5px;font-weight:500}
@@ -64,6 +69,8 @@
   .form-input:focus{border-color:#6C63FF}
   .form-select{width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px;background:#fff;cursor:pointer;outline:none}
   .form-select:focus{border-color:#6C63FF}
+  .form-textarea{width:100%;min-height:120px;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:13px;color:#1a1a2e;outline:none;resize:vertical;line-height:1.6;font-family:inherit}
+  .form-textarea:focus{border-color:#6C63FF}
   /* Config card */
   .config-card{background:#fff;border-radius:10px;border:1px solid #eee;padding:20px;margin-bottom:16px}
   .config-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #f0f0f0}
@@ -156,6 +163,16 @@
   .analytics-task-card .atc-meta{font-size:12px;color:#888;display:flex;gap:16px;flex-wrap:wrap}
   .analytics-task-card .atc-arrow{color:#ccc;font-size:18px;transition:color .15s;flex-shrink:0}
   .analytics-task-card:hover .atc-arrow{color:#6C63FF}
+
+  /* Template config */
+  .template-preview-card{background:#fafbff;border:1px solid #e8e8f5;border-radius:8px;padding:12px;margin-top:10px}
+  .template-meta{font-size:12px;color:#666;line-height:1.7;min-width:0}
+  .template-meta strong{color:#1a1a2e}
+  .template-content-preview{margin-top:8px;padding:10px 12px;background:#fff;border:1px solid #eef0f5;border-radius:6px;color:#333;line-height:1.7;white-space:pre-wrap;word-break:break-word;max-height:120px;overflow-y:auto}
+  .template-empty{font-size:12px;color:#aaa;padding:10px 12px;background:#fafafa;border:1px dashed #ddd;border-radius:6px;margin-top:8px}
+  .status-on{background:#f0fff4;color:#276749}
+  .status-off{background:#f7fafc;color:#718096;border:1px solid #e2e8f0}
+
 </style>
 </head>
 <body>
@@ -196,7 +213,7 @@
         <div class="stat-value" id="stat-total">4</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">总触达 UID</div>
+        <div class="stat-label">总目标人数</div>
         <div class="stat-value">51.5K</div>
       </div>
       <div class="stat-card">
@@ -208,7 +225,8 @@
       <input class="form-input" style="width:220px" placeholder="搜索任务名称 / ID…">
       <select class="form-select" style="width:120px">
         <option>全部状态</option>
-        <option>完成</option>
+        <option>发送完成</option>
+        <option>发送中</option>
         <option>草稿</option>
       </select>
       <select class="form-select" style="width:140px;background:#f5f5f5;color:#718096" disabled>
@@ -224,10 +242,12 @@
           <tr>
             <th>任务 ID</th>
             <th>任务名称</th>
-            <th>UID 规模</th>
-            <th>生效时间</th>
+            <th>WhatsApp配置</th>
+            <th>开始时间</th>
             <th>结束时间</th>
             <th>游戏</th>
+            <th>目标人数</th>
+            <th>实际人数</th>
             <th>状态</th>
             <th>操作</th>
           </tr>
@@ -387,9 +407,11 @@
       <div class="step-line"></div>
       <div class="step active"><div class="step-num">2</div><span>人群上传</span></div>
       <div class="step-line"></div>
-      <div class="step active"><div class="step-num">3</div><span>游戏奖励配置</span></div>
+      <div class="step active"><div class="step-num">3</div><span>WhatsApp配置</span></div>
       <div class="step-line"></div>
-      <div class="step"><div class="step-num">4</div><span>生效时间</span></div>
+      <div class="step active"><div class="step-num">4</div><span>游戏奖励</span></div>
+      <div class="step-line"></div>
+      <div class="step"><div class="step-num">5</div><span>生效时间</span></div>
     </div>
 
     <!-- Section 1 -->
@@ -422,18 +444,7 @@
         <p>点击选择文件，或将 .csv 文件拖拽到此处</p>
         <div class="upload-hint">每行一个 UID，支持单次最大 500K 条 · 仅支持 .csv 格式</div>
       </div>
-      <div class="uid-result" id="uidResult" style="display:none">
-        <div style="display:flex;align-items:flex-start;gap:10px">
-          <span style="font-size:16px">✅</span>
-          <div>
-            <div><strong>uid_whale_april.csv 解析完成</strong></div>
-            <div style="margin-top:4px;display:flex;gap:20px;flex-wrap:wrap">
-              <span>有效 UID：<strong>12,500 个</strong></span>
-              <span>重复去重：<strong>20 条</strong>已自动过滤</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div class="uid-result" id="uidResult" style="display:none"></div>
     </div>
 
     <!-- Section 2.5 -->
@@ -467,7 +478,37 @@
     <!-- Section 3 -->
     <div class="config-card">
       <div class="config-card-header">
-        <h3><span class="section-num">3</span> 游戏奖励配置</h3>
+        <h3><span class="section-num">3</span> WhatsApp 配置</h3>
+        <span style="font-size:12px;color:#888">配置本次召回任务的 WhatsApp 触达内容</span>
+      </div>
+      <div class="form-group" style="margin-bottom:16px">
+        <label class="form-label">模板 ID</label>
+        <input class="form-input" id="task-template-id" placeholder="例：TPL-001 / WhatsApp 已审核模板 ID">
+        <div style="font-size:11px;color:#888;margin-top:4px">手动填写 WhatsApp 已审核通过的模板 ID；文案内容在 WhatsApp 模板中维护，后台不再配置文案。</div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="form-group" style="margin-bottom:16px">
+        <label class="form-label">上传消息中的图片</label>
+        <div class="eagle-upload-zone" id="waImageUploadZone" onclick="simulateWaImageUpload()">
+          <div class="upload-icon">🖼️</div>
+          <p>点击上传 WhatsApp 消息图片</p>
+          <div class="upload-hint">支持 JPG / PNG / WebP，建议 1:1 或 16:9，最大 5MB</div>
+        </div>
+        <div id="waImageResult" class="uid-result" style="display:none">✅ whatsapp_message_image.png 上传成功</div>
+      </div>
+
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">发送时间</label>
+        <input type="datetime-local" class="datetime-input" id="whatsapp-send-time" value="2026-04-28T10:00">
+        <div style="font-size:11px;color:#888;margin-top:4px">到达该时间后，系统按所选模板 ID + 上传图片发送 WhatsApp 消息。</div>
+      </div>
+    </div>
+
+    <!-- Section 4 -->
+    <div class="config-card">
+      <div class="config-card-header">
+        <h3><span class="section-num">4</span> 游戏奖励配置</h3>
         <span style="font-size:12px;color:#888">用户必先消耗完所有免费次数，方可进行付费游戏</span>
       </div>
       <div class="form-group" style="margin-bottom:16px">
@@ -510,10 +551,10 @@
       </div>
     </div>
 
-    <!-- Section 4 -->
+    <!-- Section 5 -->
     <div class="config-card">
       <div class="config-card-header">
-        <h3><span class="section-num">4</span> 生效时间配置</h3>
+        <h3><span class="section-num">5</span> 生效时间配置</h3>
         <span style="font-size:12px;color:#888">控制奖励发放与活动的有效期窗口</span>
       </div>
       <div class="time-grid">
@@ -556,42 +597,90 @@
 <script>
 // ========== Task Data ==========
 var tasks = [
-  { id: 1, name: 'Whale用户4月大鱼回流', uidCount: 12500, start: '2026-04-20 10:00', end: '2026-05-05 23:59', game: 'Teen Patti', status: 'done', created: '2026-04-20', note: '' },
-  { id: 2, name: '5日未登用户召回', uidCount: 8200, start: '2026-04-18 09:00', end: '2026-04-25 23:59', game: 'Teen Patti', status: 'done', created: '2026-04-18', note: '' },
-  { id: 3, name: '板球节召回专项', uidCount: 25000, start: '2026-05-01 00:00', end: '2026-05-10 23:59', game: 'Teen Patti', status: 'draft', created: '2026-04-25', note: '针对板球节期间的流失用户' },
-  { id: 4, name: 'Teen Patti 高价值流失', uidCount: 5800, start: '2026-04-10 10:00', end: '2026-04-20 23:59', game: 'Teen Patti', status: 'done', created: '2026-04-10', note: '' }
+  { id: 1, name: 'Whale用户4月大鱼回流', targetCount: 12500, actualCount: 12486, sendStartAt: '2026-04-20 10:00', sendEndAt: '2026-04-20 10:42', start: '2026-04-20 10:00', end: '2026-05-05 23:59', game: 'Teen Patti', templateId: 'TPL-001', waImage: 'whale_recall_banner.png', waSendTime: '2026-04-20 10:00', status: 'done', created: '2026-04-20', note: '' },
+  { id: 2, name: '5日未登用户召回', targetCount: 8200, actualCount: 8196, sendStartAt: '2026-04-18 09:30', sendEndAt: '2026-04-18 09:58', start: '2026-04-18 09:00', end: '2026-04-25 23:59', game: 'Teen Patti', templateId: 'TPL-002', waImage: 'inactive_user_cover.png', waSendTime: '2026-04-18 09:30', status: 'done', created: '2026-04-18', note: '' },
+  { id: 3, name: '板球节召回专项', targetCount: 25000, actualCount: 0, sendStartAt: '2026-05-01 09:00', sendEndAt: '', start: '2026-05-01 00:00', end: '2026-05-10 23:59', game: 'Teen Patti', templateId: 'TPL-003', waImage: 'cricket_recall.png', waSendTime: '2026-05-01 09:00', status: 'sending', created: '2026-04-25', note: '针对板球节期间的流失用户' },
+  { id: 4, name: 'Teen Patti 高价值流失', targetCount: 5800, actualCount: 5792, sendStartAt: '2026-04-10 11:00', sendEndAt: '2026-04-10 11:18', start: '2026-04-10 10:00', end: '2026-04-20 23:59', game: 'Teen Patti', templateId: 'TPL-003', waImage: 'vip_gift_cover.png', waSendTime: '2026-04-10 11:00', status: 'done', created: '2026-04-10', note: '' },
+  { id: 5, name: 'Whale用户复召草稿', targetCount: 0, actualCount: 0, sendStartAt: '', sendEndAt: '', start: '2026-05-06 10:00', end: '2026-05-12 23:59', game: 'Teen Patti', templateId: 'TPL-001', waImage: '', waSendTime: '', status: 'draft', created: '2026-05-04', note: '' }
 ];
 
-var nextId = 5;
+var nextId = 6;
 var pendingAction = null;
 var editingTaskId = null; // null = 新建, number = 编辑
 var selectedAnalyticsTaskId = null; // 当前查看报表的任务 ID
+var waImageUploaded = false;
+var waImageName = 'whatsapp_message_image.png';
+var uidFileUploaded = false;
+var uploadedTargetCount = 12500;
+var sendingTimers = {};
 
 // ========== Render ==========
+function getTemplateLabel(id) {
+  return id ? id : '未填写模板';
+}
+
+function truncateText(text, maxLen) {
+  if (!text) return '';
+  return text.length > maxLen ? text.slice(0, maxLen) + '…' : text;
+}
+
+function getTargetCount(t) {
+  return t.targetCount !== undefined ? t.targetCount : (t.uidCount || 0);
+}
+
+function getActualCount(t) {
+  return t.actualCount !== undefined ? t.actualCount : (t.status === 'done' ? getTargetCount(t) : 0);
+}
+
+function renderActualCount(t) {
+  if (t.status === 'draft') return '<span style="color:#aaa">-</span>';
+  if (t.status === 'sending') {
+    return '<span class="send-loading"><span class="send-spinner"></span>发送中</span>';
+  }
+  var actual = getActualCount(t);
+  return actual.toLocaleString();
+}
+
+function formatNowForTable() {
+  var d = new Date();
+  var pad = function(n) { return n < 10 ? '0' + n : n; };
+  return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+}
+
 function renderTaskList() {
   var tbody = document.getElementById('task-table-body');
   var html = '';
   tasks.forEach(function(t) {
     var statusBadge = '';
     if (t.status === 'draft') statusBadge = '<span class="badge badge-draft">○ 草稿</span>';
-    else if (t.status === 'done') statusBadge = '<span class="badge badge-done">✓ 完成</span>';
+    else if (t.status === 'sending') statusBadge = '<span class="badge badge-sending"><span class="send-spinner" style="width:10px;height:10px;border-width:1.5px;margin-right:5px"></span>发送中</span>';
+    else if (t.status === 'done') statusBadge = '<span class="badge badge-done">✓ 发送完成</span>';
 
     var ops = '';
     if (t.status === 'draft') {
       ops = '<button class="btn btn-primary btn-sm" onclick="editTask(' + t.id + ')">编辑</button>';
+    } else if (t.status === 'sending') {
+      ops = '<button class="btn btn-outline btn-sm" disabled>报表</button>' +
+            '<button class="btn btn-danger btn-sm" style="margin-left:4px" disabled>删除</button>';
     } else if (t.status === 'done') {
       ops = '<button class="btn btn-outline btn-sm" onclick="openAnalytics(' + t.id + ')">报表</button>' +
             '<button class="btn btn-danger btn-sm" style="margin-left:4px" onclick="deleteTask(' + t.id + ')">删除</button>';
     }
 
+    var target = getTargetCount(t);
+    var targetText = target ? target.toLocaleString() : '<span style="color:#aaa">-</span>';
+    var sendStart = t.sendStartAt || '<span style="color:#aaa">-</span>';
+    var sendEnd = t.sendEndAt || '<span style="color:#aaa">-</span>';
 
     html += '<tr>' +
       '<td style="color:#6C63FF;font-weight:500">' + t.id + '</td>' +
       '<td><strong>' + t.name + '</strong><br><span style="font-size:11px;color:#aaa">创建于 ' + t.created + '</span></td>' +
-      '<td>' + t.uidCount.toLocaleString() + '</td>' +
-      '<td style="font-size:12px">' + t.start + '</td>' +
-      '<td style="font-size:12px">' + t.end + '</td>' +
+      '<td><span class="chip">' + getTemplateLabel(t.templateId) + '</span><br><span style="font-size:11px;color:#888">发送：' + (t.waSendTime || '-') + '</span></td>' +
+      '<td style="font-size:12px">' + sendStart + '</td>' +
+      '<td style="font-size:12px">' + sendEnd + '</td>' +
       '<td><span class="chip">' + t.game + '</span></td>' +
+      '<td>' + targetText + '</td>' +
+      '<td>' + renderActualCount(t) + '</td>' +
       '<td>' + statusBadge + '</td>' +
       '<td>' + ops + '</td>' +
     '</tr>';
@@ -648,7 +737,8 @@ function renderAnalyticsTaskList() {
         '<div class="atc-name">#' + t.id + ' · ' + t.name + '</div>' +
         '<div class="atc-meta">' +
           '<span>🎮 ' + t.game + '</span>' +
-          '<span>👥 ' + t.uidCount.toLocaleString() + ' UID</span>' +
+          '<span>👥 ' + getTargetCount(t).toLocaleString() + ' UID</span>' +
+          '<span>✉️ ' + getTemplateLabel(t.templateId) + '</span>' +
           '<span>📅 ' + t.start + ' ~ ' + t.end.split(' ')[0] + '</span>' +
         '</div>' +
       '</div>' +
@@ -679,8 +769,11 @@ function editTask(id) {
   // Fill form with existing data
   document.getElementById('task-name').value = t.name;
   document.getElementById('task-note').value = t.note || '';
-  // Reset upload zones (can't restore file state)
+  document.getElementById('whatsapp-send-time').value = toDatetimeLocal(t.waSendTime || t.start);
+  document.getElementById('task-template-id').value = t.templateId || '';
+  // Reset upload zones (can't restore file state), then restore WhatsApp image upload state
   resetUploadZones();
+  simulateWaImageUploaded(t.waImage || waImageName);
   openDrawer();
 }
 
@@ -702,6 +795,8 @@ function resetDrawerForm() {
   document.getElementById('task-note').value = '';
   document.getElementById('start-time').value = '2026-04-28T10:00';
   document.getElementById('end-time').value = '2026-05-12T23:59';
+  document.getElementById('whatsapp-send-time').value = '2026-04-28T10:00';
+  document.getElementById('task-template-id').value = '';
   document.getElementById('valid-days').value = '7';
   document.getElementById('tp-count').value = '5';
   document.getElementById('tp-quota').selectedIndex = 0;
@@ -710,6 +805,8 @@ function resetDrawerForm() {
 
 function resetUploadZones() {
   // Reset CSV upload zone
+  uidFileUploaded = false;
+  uploadedTargetCount = 12500;
   var zone = document.getElementById('uploadZone');
   zone.innerHTML = '<div class="upload-icon">📂</div><p>点击选择文件，或将 .csv 文件拖拽到此处</p><div class="upload-hint">每行一个 UID，支持单次最大 500K 条 · 仅支持 .csv 格式</div>';
   zone.style.borderColor = '#d4d4d4';
@@ -717,6 +814,7 @@ function resetUploadZones() {
   document.getElementById('uidResult').style.display = 'none';
   // Reset eagle upload
   removeEagleImageDirect();
+  resetWaImageUpload();
 }
 
 // Close drawer on overlay click
@@ -724,7 +822,58 @@ document.getElementById('drawerOverlay').addEventListener('click', function() {
   closeDrawer();
 });
 
+
 // ========== Actions ==========
+function resetWaImageUpload() {
+  waImageUploaded = false;
+  waImageName = 'whatsapp_message_image.png';
+  var zone = document.getElementById('waImageUploadZone');
+  if (zone) {
+    zone.innerHTML = '<div class="upload-icon">🖼️</div><p>点击上传 WhatsApp 消息图片</p><div class="upload-hint">支持 JPG / PNG / WebP，建议 1:1 或 16:9，最大 5MB</div>';
+    zone.style.borderColor = '#d4d4d4';
+    zone.style.background = '#fafafa';
+  }
+  var result = document.getElementById('waImageResult');
+  if (result) result.style.display = 'none';
+}
+
+function simulateWaImageUploaded(fileName) {
+  waImageUploaded = true;
+  waImageName = fileName || 'whatsapp_message_image.png';
+  var zone = document.getElementById('waImageUploadZone');
+  if (zone) {
+    zone.innerHTML = '<div class="upload-icon">✅</div><p><strong>' + waImageName + '</strong> 上传成功</p><div class="upload-hint">点击可重新上传</div>';
+    zone.style.borderColor = '#48bb78';
+    zone.style.background = '#f0fff4';
+  }
+  var result = document.getElementById('waImageResult');
+  if (result) {
+    result.style.display = 'block';
+    result.innerHTML = '✅ ' + waImageName + ' 上传成功';
+  }
+}
+
+function simulateWaImageUpload() {
+  var zone = document.getElementById('waImageUploadZone');
+  zone.innerHTML = '<div class="upload-icon">⏳</div><p style="color:#6C63FF">正在上传图片…</p>';
+  setTimeout(function() {
+    simulateWaImageUploaded('whatsapp_message_image.png');
+  }, 800);
+}
+
+function fmtDate(dtStr) {
+  if (!dtStr) return '';
+  var d = new Date(dtStr);
+  var pad = function(n) { return n < 10 ? '0' + n : n; };
+  return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+}
+
+function toDatetimeLocal(dtStr) {
+  if (!dtStr) return '';
+  var normalized = dtStr.replace(' ', 'T');
+  return normalized.length === 16 ? normalized : normalized.slice(0, 16);
+}
+
 function deleteTask(id) {
   openModal('确认删除任务', '确定要删除任务 <strong>#' + id + '</strong> 吗？此操作不可撤销，任务数据将被永久删除。', 'danger', function() {
     tasks = tasks.filter(function(x) { return x.id !== id; });
@@ -743,10 +892,43 @@ function openAnalytics(id) {
   showPage('analytics');
 }
 
+function startSendingTask(id) {
+  var task = tasks.find(function(x) { return x.id === id; });
+  if (!task || task.status !== 'sending') return;
+  if (sendingTimers[id]) clearTimeout(sendingTimers[id]);
+  renderTaskList();
+  if (document.getElementById('analytics-task-list')) renderAnalyticsTaskList();
+  sendingTimers[id] = setTimeout(function() {
+    var t = tasks.find(function(x) { return x.id === id; });
+    if (!t || t.status !== 'sending') return;
+    var target = getTargetCount(t);
+    var failCount = target ? Math.min(20, Math.max(0, Math.round(target * 0.0008))) : 0;
+    t.actualCount = Math.max(0, target - failCount);
+    t.status = 'done';
+    t.sendEndAt = formatNowForTable();
+    delete sendingTimers[id];
+    renderTaskList();
+    if (document.getElementById('analytics-task-list')) renderAnalyticsTaskList();
+  }, 6000);
+}
+
+function startAllSendingSimulations() {
+  tasks.forEach(function(t) {
+    if (t.status === 'sending') startSendingTask(t.id);
+  });
+}
+
 // ========== Publish / Save Draft ==========
 function publishTask() {
   var name = document.getElementById('task-name').value.trim();
   if (!name) { alert('请填写任务名称'); return; }
+  if (!uidFileUploaded) { alert('请先上传目标用户文件'); return; }
+
+  var templateId = document.getElementById('task-template-id').value.trim();
+  if (!templateId) { alert('请填写模板 ID'); return; }
+  if (!waImageUploaded) { alert('请上传 WhatsApp 消息图片'); return; }
+  var waSendTime = document.getElementById('whatsapp-send-time').value;
+  if (!waSendTime) { alert('请填写 WhatsApp 发送时间'); return; }
 
   var start = document.getElementById('start-time').value;
   var end = document.getElementById('end-time').value;
@@ -771,32 +953,49 @@ function publishTask() {
       t.note = document.getElementById('task-note').value.trim();
       t.start = fmtDate(start);
       t.end = fmtDate(end);
-      t.status = 'done';
+      t.templateId = templateId;
+      t.waImage = waImageName;
+      t.waSendTime = fmtDate(waSendTime);
+      t.targetCount = uploadedTargetCount;
+      t.actualCount = 0;
+      t.sendStartAt = formatNowForTable();
+      t.sendEndAt = '';
+      t.status = 'sending';
     }
   } else {
     // Create new task
     tasks.unshift({
       id: nextId++,
       name: name,
-      uidCount: 12500,
+      targetCount: uploadedTargetCount,
+      actualCount: 0,
+      sendStartAt: formatNowForTable(),
+      sendEndAt: '',
       start: fmtDate(start),
       end: fmtDate(end),
       game: 'Teen Patti',
-      status: 'done',
+      templateId: templateId,
+      waImage: waImageName,
+      waSendTime: fmtDate(waSendTime),
+      status: 'sending',
       created: created,
       note: document.getElementById('task-note').value.trim()
     });
   }
 
   renderTaskList();
+  var currentTaskId = editingTaskId || tasks[0].id;
   closeDrawer();
   showPage('tasklist');
+  startSendingTask(currentTaskId);
 }
 
 function saveDraft() {
   var name = document.getElementById('task-name').value.trim();
   if (!name) { alert('请填写任务名称'); return; }
 
+  var templateId = document.getElementById('task-template-id').value.trim();
+  var waSendTime = document.getElementById('whatsapp-send-time').value;
   var start = document.getElementById('start-time').value;
   var end = document.getElementById('end-time').value;
 
@@ -819,16 +1018,26 @@ function saveDraft() {
       t.note = document.getElementById('task-note').value.trim();
       t.start = fmtDate(start);
       t.end = fmtDate(end);
+      t.templateId = templateId || t.templateId;
+      t.waImage = waImageUploaded ? waImageName : t.waImage;
+      t.waSendTime = waSendTime ? fmtDate(waSendTime) : t.waSendTime;
+      if (uidFileUploaded) t.targetCount = uploadedTargetCount;
     }
   } else {
     // Create new draft
     tasks.unshift({
       id: nextId++,
       name: name,
-      uidCount: 12500,
+      targetCount: uidFileUploaded ? uploadedTargetCount : 0,
+      actualCount: 0,
+      sendStartAt: '',
+      sendEndAt: '',
       start: fmtDate(start),
       end: fmtDate(end),
       game: 'Teen Patti',
+      templateId: templateId,
+      waImage: waImageUploaded ? waImageName : '',
+      waSendTime: waSendTime ? fmtDate(waSendTime) : '',
       status: 'draft',
       created: created,
       note: document.getElementById('task-note').value.trim()
@@ -866,13 +1075,19 @@ document.getElementById('confirmModal').addEventListener('click', function(e) {
 // ========== Upload / Eagle ==========
 function simulateUpload() {
   var zone = document.getElementById('uploadZone');
-  zone.innerHTML = '<div class="upload-icon">⏳</div><p style="color:#6C63FF">正在解析文件，请稍候…</p>';
+  uidFileUploaded = false;
+  zone.style.borderColor = '#6C63FF';
+  zone.style.background = '#f5f3ff';
+  zone.innerHTML = '<div class="upload-icon">⏳</div><p style="color:#6C63FF"><strong>文件上传中…</strong></p><div class="upload-hint">请勿关闭当前弹窗</div>';
+  document.getElementById('uidResult').style.display = 'none';
   setTimeout(function() {
-    zone.innerHTML = '<div class="upload-icon">✅</div><p><strong>uid_whale_april.csv</strong> 上传成功</p><div class="upload-hint">点击可重新上传</div>';
+    uidFileUploaded = true;
+    uploadedTargetCount = 12500;
+    zone.innerHTML = '<div class="upload-icon">✅</div><p><strong>上传完成</strong></p><div class="upload-hint">点击可重新上传</div>';
     zone.style.borderColor = '#48bb78';
     zone.style.background = '#f0fff4';
-    document.getElementById('uidResult').style.display = 'block';
-  }, 1400);
+    document.getElementById('uidResult').style.display = 'none';
+  }, 1200);
 }
 
 function handleEagleUpload() {
@@ -945,6 +1160,7 @@ document.addEventListener('keydown', function(e) {
 
 // Init
 renderTaskList();
+startAllSendingSimulations();
 </script>
 </body>
 </html>
