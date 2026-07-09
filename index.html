@@ -560,29 +560,13 @@
         <div class="form-group" style="margin-bottom:0">
           <label class="form-label">生效时间（Activity Start）</label>
           <input type="datetime-local" class="datetime-input" id="start-time" value="2026-04-28T10:00">
-          <div style="font-size:11px;color:#888;margin-top:4px">到达此时间后，奖励开始对用户可见</div>
         </div>
         <div class="form-group" style="margin-bottom:0">
           <label class="form-label">结束时间（Activity End）</label>
           <input type="datetime-local" class="datetime-input" id="end-time" value="2026-05-12T23:59">
-          <div style="font-size:11px;color:#888;margin-top:4px">超过此时间，未消耗的免费次数自动过期</div>
         </div>
       </div>
-      <div class="divider"></div>
-      <div class="form-group" style="margin-bottom:0">
-        <label class="form-label">免费次数有效期（用户领取后）</label>
-        <div style="display:flex;align-items:center;gap:8px">
-          <input class="form-input" type="number" id="valid-days" value="7" style="width:70px">
-          <select class="form-select" style="width:90px">
-            <option>天</option>
-            <option>小时</option>
-          </select>
-        </div>
-        <div style="font-size:11px;color:#888;margin-top:4px">用户领取免费次数后的可用期限，过期自动失效</div>
-      </div>
-      <div style="margin-top:14px;padding:10px 14px;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;font-size:12px;color:#92400e">
-        ⚠️ 活动持续时间应不短于免费次数有效期，否则部分用户在活动结束前领取的奖励可能无法在有效期内充分使用
-      </div>
+      <div style="font-size:11px;color:#888;margin-top:8px">配置时间内登录即可获得免费游戏次数</div>
     </div>
 
   </div><!-- end drawer-body -->
@@ -796,7 +780,6 @@ function resetDrawerForm() {
   document.getElementById('end-time').value = '2026-05-12T23:59';
   document.getElementById('task-template-id').value = '';
   document.getElementById('eagle-priority').value = '';
-  document.getElementById('valid-days').value = '7';
   document.getElementById('tp-count').value = '5';
   document.getElementById('tp-quota').selectedIndex = 0;
   resetUploadZones();
