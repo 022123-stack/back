@@ -52,7 +52,8 @@
   tr:last-child td{border-bottom:none}
   tr:hover td{background:#fafcff}
   .badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500}
-  .badge-draft{background:#f7fafc;color:#718096;border:1px solid #e2e8f0}
+  .badge-offline{background:#f7fafc;color:#718096;border:1px solid #e2e8f0}
+  .badge-unsent{background:#eff6ff;color:#2b6cb0;border:1px solid #bfdbfe}
   .badge-done{background:#f0fff4;color:#276749}
   .badge-sending{background:#fff7ed;color:#c05621;border:1px solid #fed7aa}
   .btn:disabled,.btn-disabled{background:#f5f5f5!important;color:#bbb!important;border:1px solid #e5e5e5!important;cursor:not-allowed!important;pointer-events:none}
@@ -223,15 +224,17 @@
     </div>
     <div style="display:flex;gap:10px;margin-bottom:16px;align-items:center">
       <input class="form-input" style="width:220px" placeholder="搜索任务名称 / ID…">
-      <select class="form-select" style="width:120px">
-        <option>全部状态</option>
-        <option>发送完成</option>
-        <option>发送中</option>
-        <option>草稿</option>
+      <select class="form-select" style="width:120px" id="status-filter" onchange="renderTaskList()">
+        <option value="all">全部状态</option>
+        <option value="done">发送完成</option>
+        <option value="sending">发送中</option>
+        <option value="unsent">未发送</option>
+        <option value="offline">下架</option>
       </select>
       <select class="form-select" style="width:140px;background:#f5f5f5;color:#718096" disabled>
         <option>Teen Patti</option>
       </select>
+      <span style="font-size:12px;color:#888">未发送 = 已配置计划发送时间，但尚未到发送时间</span>
     </div>
     <div class="table-card">
       <div class="table-header">
@@ -243,8 +246,8 @@
             <th>任务 ID</th>
             <th>任务名称</th>
             <th>WhatsApp配置</th>
-            <th>开始时间</th>
-            <th>结束时间</th>
+            <th>发送开始时间</th>
+            <th>发送结束时间</th>
             <th>游戏</th>
             <th>目标人数</th>
             <th>实际人数</th>
@@ -274,7 +277,7 @@
       <div id="analytics-no-data" style="display:none;text-align:center;padding:60px 20px">
         <div style="font-size:48px;opacity:.25;margin-bottom:12px">📭</div>
         <div style="font-size:14px;color:#888">暂无可查看的任务数据</div>
-        <div style="font-size:12px;color:#aaa;margin-top:4px">完成状态任务将在此展示</div>
+        <div style="font-size:12px;color:#aaa;margin-top:4px">发送完成状态任务将在此展示</div>
       </div>
     </div>
   </div>
@@ -572,8 +575,8 @@
   </div><!-- end drawer-body -->
 
   <div class="drawer-footer">
-    <button class="btn btn-outline" onclick="saveDraft()">保存草稿</button>
-    <button class="btn btn-primary" onclick="publishTask()">发布并执行 →</button>
+    <button class="btn btn-outline" onclick="saveOffline()">保存为下架</button>
+    <button class="btn btn-primary" onclick="publishTask()">上架并执行 →</button>
   </div>
 </div>
 
@@ -584,10 +587,11 @@ var tasks = [
   { id: 2, name: '5日未登用户召回', targetCount: 8200, actualCount: 8196, sendStartAt: '2026-04-18 09:30', sendEndAt: '2026-04-18 09:58', start: '2026-04-18 09:00', end: '2026-04-25 23:59', game: 'Teen Patti', templateId: 'TPL-002', waImage: 'inactive_user_cover.png', waSendTime: '2026-04-18 09:30', eaglePriority: 2, status: 'done', created: '2026-04-18', note: '' },
   { id: 3, name: '板球节召回专项', targetCount: 25000, actualCount: 0, sendStartAt: '2026-05-01 09:00', sendEndAt: '', start: '2026-05-01 00:00', end: '2026-05-10 23:59', game: 'Teen Patti', templateId: 'TPL-003', waImage: 'cricket_recall.png', waSendTime: '2026-05-01 09:00', eaglePriority: 1, status: 'sending', created: '2026-04-25', note: '针对板球节期间的流失用户' },
   { id: 4, name: 'Teen Patti 高价值流失', targetCount: 5800, actualCount: 5792, sendStartAt: '2026-04-10 11:00', sendEndAt: '2026-04-10 11:18', start: '2026-04-10 10:00', end: '2026-04-20 23:59', game: 'Teen Patti', templateId: 'TPL-003', waImage: 'vip_gift_cover.png', waSendTime: '2026-04-10 11:00', eaglePriority: 3, status: 'done', created: '2026-04-10', note: '' },
-  { id: 5, name: 'Whale用户复召草稿', targetCount: 0, actualCount: 0, sendStartAt: '', sendEndAt: '', start: '2026-05-06 10:00', end: '2026-05-12 23:59', game: 'Teen Patti', templateId: 'TPL-001', waImage: '', waSendTime: '', eaglePriority: '', status: 'draft', created: '2026-05-04', note: '' }
+  { id: 5, name: 'Whale用户复召配置', targetCount: 0, actualCount: 0, sendStartAt: '', sendEndAt: '', start: '2026-05-06 10:00', end: '2026-05-12 23:59', game: 'Teen Patti', templateId: 'TPL-001', waImage: '', waSendTime: '', eaglePriority: '', status: 'offline', created: '2026-05-04', note: '' },
+  { id: 6, name: '周末回流定时任务', targetCount: 9600, actualCount: 0, sendStartAt: '2026-07-10 10:00', sendEndAt: '', start: '2026-07-10 10:00', end: '2026-07-15 23:59', game: 'Teen Patti', templateId: 'TPL-004', waImage: 'weekend_recall_cover.png', waSendTime: '2026-07-10 10:00', eaglePriority: 4, status: 'unsent', created: '2026-07-09', note: '已配置计划发送时间，尚未到发送时间' }
 ];
 
-var nextId = 6;
+var nextId = 7;
 var pendingAction = null;
 var editingTaskId = null; // null = 新建, number = 编辑
 var selectedAnalyticsTaskId = null; // 当前查看报表的任务 ID
@@ -615,9 +619,28 @@ function getActualCount(t) {
   return t.actualCount !== undefined ? t.actualCount : (t.status === 'done' ? getTargetCount(t) : 0);
 }
 
+function parseTableTime(str) {
+  if (!str) return null;
+  return new Date(str.replace(' ', 'T'));
+}
+
+function isFutureSendTime(sendTime) {
+  var dt = parseTableTime(sendTime);
+  return dt && dt.getTime() > Date.now();
+}
+
+function getTaskRuntimeStatus(t) {
+  // 未发送：已上架并配置计划发送时间，但当前时间未到发送时间
+  if (t.status === 'unsent' && t.sendStartAt && !isFutureSendTime(t.sendStartAt)) {
+    t.status = 'sending';
+  }
+  return t.status;
+}
+
 function renderActualCount(t) {
-  if (t.status === 'draft') return '<span style="color:#aaa">-</span>';
-  if (t.status === 'sending') {
+  var status = getTaskRuntimeStatus(t);
+  if (status === 'offline' || status === 'unsent') return '<span style="color:#aaa">-</span>';
+  if (status === 'sending') {
     return '<span class="send-loading"><span class="send-spinner"></span>发送中</span>';
   }
   var actual = getActualCount(t);
@@ -633,19 +656,29 @@ function formatNowForTable() {
 function renderTaskList() {
   var tbody = document.getElementById('task-table-body');
   var html = '';
-  tasks.forEach(function(t) {
+  var statusFilterEl = document.getElementById('status-filter');
+  var statusFilter = statusFilterEl ? statusFilterEl.value : 'all';
+  var displayTasks = statusFilter === 'all' ? tasks : tasks.filter(function(item) { return getTaskRuntimeStatus(item) === statusFilter; });
+  displayTasks.forEach(function(t) {
+    var status = getTaskRuntimeStatus(t);
     var statusBadge = '';
-    if (t.status === 'draft') statusBadge = '<span class="badge badge-draft">○ 草稿</span>';
-    else if (t.status === 'sending') statusBadge = '<span class="badge badge-sending"><span class="send-spinner" style="width:10px;height:10px;border-width:1.5px;margin-right:5px"></span>发送中</span>';
-    else if (t.status === 'done') statusBadge = '<span class="badge badge-done">✓ 发送完成</span>';
+    if (status === 'offline') statusBadge = '<span class="badge badge-offline">↓ 下架</span>';
+    else if (status === 'unsent') statusBadge = '<span class="badge badge-unsent">○ 未发送</span>';
+    else if (status === 'sending') statusBadge = '<span class="badge badge-sending"><span class="send-spinner" style="width:10px;height:10px;border-width:1.5px;margin-right:5px"></span>发送中</span>';
+    else if (status === 'done') statusBadge = '<span class="badge badge-done">✓ 发送完成</span>';
 
     var ops = '';
-    if (t.status === 'draft') {
-      ops = '<button class="btn btn-primary btn-sm" onclick="editTask(' + t.id + ')">编辑</button>';
-    } else if (t.status === 'sending') {
+    if (status === 'offline') {
+      ops = '<button class="btn btn-primary btn-sm" onclick="editTask(' + t.id + ')">编辑</button>' +
+            '<button class="btn btn-danger btn-sm" style="margin-left:4px" onclick="deleteTask(' + t.id + ')">删除</button>';
+    } else if (status === 'unsent') {
+      ops = '<button class="btn btn-primary btn-sm" onclick="editTask(' + t.id + ')">编辑</button>' +
+            '<button class="btn btn-outline btn-sm" style="margin-left:4px" disabled>报表</button>' +
+            '<button class="btn btn-danger btn-sm" style="margin-left:4px" onclick="deleteTask(' + t.id + ')">删除</button>';
+    } else if (status === 'sending') {
       ops = '<button class="btn btn-outline btn-sm" disabled>报表</button>' +
             '<button class="btn btn-danger btn-sm" style="margin-left:4px" disabled>删除</button>';
-    } else if (t.status === 'done') {
+    } else if (status === 'done') {
       ops = '<button class="btn btn-outline btn-sm" onclick="openAnalytics(' + t.id + ')">报表</button>' +
             '<button class="btn btn-danger btn-sm" style="margin-left:4px" onclick="deleteTask(' + t.id + ')">删除</button>';
     }
@@ -670,7 +703,7 @@ function renderTaskList() {
   });
   tbody.innerHTML = html;
   document.getElementById('stat-total').textContent = tasks.length;
-  document.getElementById('task-count-label').innerHTML = '共 ' + tasks.length + ' 条';
+  document.getElementById('task-count-label').innerHTML = statusFilter === 'all' ? '共 ' + tasks.length + ' 条' : '筛选结果 ' + displayTasks.length + ' 条';
 }
 
 // ========== Navigation ==========
@@ -696,7 +729,7 @@ function showAnalyticsSelector() {
 }
 
 function renderAnalyticsTaskList() {
-  // 只展示有数据的任务：完成状态（排除草稿）
+  // 只展示有数据的任务：完成状态（未发送=计划发送时间未到，下架=不进入发送链路）
   var dataTasks = tasks.filter(function(t) { return t.status === 'done'; });
   var container = document.getElementById('analytics-task-list');
   var noData = document.getElementById('analytics-no-data');
@@ -910,7 +943,8 @@ function startSendingTask(id) {
 
 function startAllSendingSimulations() {
   tasks.forEach(function(t) {
-    if (t.status === 'sending') startSendingTask(t.id);
+    var status = getTaskRuntimeStatus(t);
+    if (status === 'sending') startSendingTask(t.id);
   });
 }
 
@@ -940,7 +974,10 @@ function publishTask() {
   var now = new Date();
   var pad = function(n) { return n < 10 ? '0' + n : n; };
   var created = now.getFullYear() + '-' + pad(now.getMonth()+1) + '-' + pad(now.getDate());
-  var sendAt = formatNowForTable();
+  // 发送时间规则：生效时间晚于当前时间时，任务为「未发送」；到达后进入「发送中」
+  var plannedSendAt = fmtDate(start);
+  var shouldSchedule = isFutureSendTime(plannedSendAt);
+  var nextStatus = shouldSchedule ? 'unsent' : 'sending';
 
   if (editingTaskId) {
     // Update existing task
@@ -953,12 +990,12 @@ function publishTask() {
       t.templateId = templateId;
       t.eaglePriority = eaglePriority;
       t.waImage = waImageName;
-      t.waSendTime = sendAt;
+      t.waSendTime = plannedSendAt;
       t.targetCount = uploadedTargetCount;
       t.actualCount = 0;
-      t.sendStartAt = sendAt;
+      t.sendStartAt = plannedSendAt;
       t.sendEndAt = '';
-      t.status = 'sending';
+      t.status = nextStatus;
     }
   } else {
     // Create new task
@@ -967,7 +1004,7 @@ function publishTask() {
       name: name,
       targetCount: uploadedTargetCount,
       actualCount: 0,
-      sendStartAt: sendAt,
+      sendStartAt: plannedSendAt,
       sendEndAt: '',
       start: fmtDate(start),
       end: fmtDate(end),
@@ -975,8 +1012,8 @@ function publishTask() {
       templateId: templateId,
       eaglePriority: eaglePriority,
       waImage: waImageName,
-      waSendTime: sendAt,
-      status: 'sending',
+      waSendTime: plannedSendAt,
+      status: nextStatus,
       created: created,
       note: document.getElementById('task-note').value.trim()
     });
@@ -986,10 +1023,10 @@ function publishTask() {
   var currentTaskId = editingTaskId || tasks[0].id;
   closeDrawer();
   showPage('tasklist');
-  startSendingTask(currentTaskId);
+  if (nextStatus === 'sending') startSendingTask(currentTaskId);
 }
 
-function saveDraft() {
+function saveOffline() {
   var name = document.getElementById('task-name').value.trim();
   if (!name) { alert('请填写任务名称'); return; }
 
@@ -1011,7 +1048,7 @@ function saveDraft() {
   var created = now.getFullYear() + '-' + pad(now.getMonth()+1) + '-' + pad(now.getDate());
 
   if (editingTaskId) {
-    // Update existing draft
+    // Update existing offline task
     var t = tasks.find(function(x) { return x.id === editingTaskId; });
     if (t) {
       t.name = name;
@@ -1023,9 +1060,12 @@ function saveDraft() {
       t.waImage = waImageUploaded ? waImageName : t.waImage;
       t.waSendTime = '';
       if (uidFileUploaded) t.targetCount = uploadedTargetCount;
+      t.status = 'offline';
+      t.sendStartAt = '';
+      t.sendEndAt = '';
     }
   } else {
-    // Create new draft
+    // Create new offline task
     tasks.unshift({
       id: nextId++,
       name: name,
@@ -1040,7 +1080,7 @@ function saveDraft() {
       eaglePriority: eaglePriority,
       waImage: waImageUploaded ? waImageName : '',
       waSendTime: '',
-      status: 'draft',
+      status: 'offline',
       created: created,
       note: document.getElementById('task-note').value.trim()
     });
